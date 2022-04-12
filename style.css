@@ -6,13 +6,8 @@
     margin:10px auto;
     text-align: center;
     position: relative;
-}
-
-
-.selected{
-    background-color: #FFF;
-    border: none;
-    color: white;
+    display: flex;flex-wrap: wrap;justify-content: space-between;
+    align-items: center;
 }
 
 .btn {
@@ -20,6 +15,21 @@
     height: 25%;
     width: 25%;
 }
+
+.box{
+    font-size: 1.5rem; border: 1px solid black;
+    height: 33%;width: 33%;display: flex;justify-content: center;
+    align-items: center;cursor: pointer;
+    background-color: grey;
+}
+
+.selected{
+    background-color: #FFF;
+    border: none;
+    color: white;
+}
+
+.box:hover{transform: scale(.95);}
 
 #winPop{
     width: 400px;position: fixed; top: 100px;left: 33.8%;

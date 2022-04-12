@@ -39,6 +39,7 @@ function loadBoxes(n){
 function shuffle(){
     let minShuffle =10;
     let totlaShuffle = minShuffle + Math.floor(Math.random()*(200-100)+100);
+    console.log(totlaShuffle)
     for(let i = minShuffle; i<=totlaShuffle; i++){
         setTimeout(function timer(){
             let x = Math.floor(Math.random() * size);

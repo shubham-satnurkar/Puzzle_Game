@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle3*3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="container">
+    </div>
+    <div id="winPop">
+        <div class="header">
+            <h4>Message</h4>
+            <button type="button" class="close">&cross;</button>
+        </div>
+        <div class="content">
+            <h3>Congratulation! You Won</h3>
+            <button type="submit" id="ok" class="close">Ok</button>
+        </div>
+    </div>
+
+
+    <script>
+        const container = document.getElementById("container");
+        let size = 3;
+        let box = size ** 2;
+        let displayBox = box;
+        let shuffled = false;
+        let arr = [];
+
+        let winPopUp = document.getElementById("winPop")
+        let closePopUp = document.querySelector(".close");
+        let ok = document.getElementById("ok")
+
+
+        puzzle();
+        // console.log(arr)
+        function puzzle() {
+            createBox(size)
+            setTimeout(() => {
+                shuffle();
+            }, 500)
+        }
+
+        // Create boxex with dom
+        function createBox(n) {
+            for (let i = 1; i <= box; i++) {
+                let newBox = document.createElement('div');
+                newBox.id = `box${i}`;
+                newBox.setAttribute('index', i);
+                newBox.innerHTML = i;
+                arr.push(i)
+
+                newBox.classList.add('box');
+                newBox.addEventListener('click', function () {
+                    swap(parseInt(this.getAttribute('index')));
+                });
+                container.append(newBox);
+
+            }
+            boxId = 'box' + displayBox;
+            selectBox = document.getElementById(boxId);
+            selectBox.classList.add('selected');
+
+
+        }
+
+        // Shuffle the number randomly
+        function shuffle() {
+            let min = 100;
+            let max = min + Math.floor(Math.random() * (200 - 100) + 100);
+            // console.log(max);
+
+            for (let i = min; i <= max; i++) {
+                setTimeout(function timer() {
+                    let x = Math.floor(Math.random() * 4);
+                    console.log(x)
+                    let pos = 0;
+
+                    if (x == 0) {
+                        pos = displayBox + 1;
+
+                    }
+                    else if (x == 1) {
+                        pos = displayBox - 1;
+                    }
+                    else if (x == 2) {
+                        pos = displayBox + size;
+                    }
+                    else if (x == 3) {
+                        pos = displayBox - size;
+                    }
+
+                    swap(pos);
+                    if (i >= max - 1) {
+                        shuffled = true;
+                    }
+
+
+                }, i * 10)
+            }
+        }
+
+        // Swaping boxex on click add add remove class
+        function swap(clicked) {
+            if (clicked < 1 || clicked > (box)) {
+                return;
+            }
+            //check for right
+            if (clicked == displayBox + 1) {
+                if (clicked % size != 1) {
+                    setSelected(clicked);
+                }
+            }
+            //check for left
+            else if (clicked == displayBox - 1) {
+                if (clicked % size != 0) {
+                    setSelected(clicked);
+                }
+            }
+            //check for up
+            else if (clicked == displayBox + size) {
+                setSelected(clicked);
+            }
+            //check for down
+            else if (clicked == displayBox - size) {
+                setSelected(clicked);
+            }
+
+            // For winning message 
+            if (shuffled) {
+                if (won()) {
+                    winPopUp.animate({
+                        'display': 'block',
+                        
+                    }, 500)
+                    if (winPopUp.style.display = "block") {
+                        closePopUp.addEventListener('click', function () {
+                            winPopUp.style.display = "none"
+                        })
+                    }
+                    ok.addEventListener('click', function () {
+                        return shuffle()
+                    })
+
+                }
+                else {
+                    winPopUp.style.display = "none"
+                }
+
+                
+            }
+
+        }
+
+
+        // comparision between the box index and id's
+        function won() {
+            for (let i = 1; i <= box; i++) {
+                currentBox = document.getElementById(`box${i}`);
+                currentBoxIndex = currentBox.getAttribute('index');
+                currentBoxValue = currentBox.innerHTML;
+                if (parseInt(currentBoxIndex) != parseInt(currentBoxValue)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function setSelected(index) {
+            currentBox = document.getElementById(`box${displayBox}`);
+            currentBoxText = currentBox.innerHTML;
+            currentBox.classList.remove('selected');
+            newBox = document.getElementById(`box${index}`);
+            currentBox.innerHTML = newBox.innerHTML;
+            newBox.innerHTML = currentBoxText;
+            newBox.classList.add('selected');
+            displayBox = index;
+        }
+
+    </script>
+</body>
+
+</html>
